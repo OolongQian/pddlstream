@@ -10,7 +10,7 @@ from examples.pybullet.utils.pybullet_tools.kuka_primitives import BodyPose, Bod
 	get_stable_gen, get_ik_fn, get_free_motion_gen, get_holding_motion_gen, get_movable_collision_test
 from examples.pybullet.utils.pybullet_tools.utils import WorldSaver, connect, get_pose, set_pose, Pose, Point, \
 	set_default_camera, stable_z, get_configuration, load_model, is_placement, get_body_name, disconnect, \
-	DRAKE_IIWA_URDF, get_bodies, user_input, HideOutput, load_local_model
+	DRAKE_IIWA_URDF, get_bodies, user_input, HideOutput
 from pddlstream.algorithms.focused import solve_focused
 from pddlstream.language.constants import print_solution
 from pddlstream.language.generator import from_gen_fn, from_fn
@@ -111,6 +111,17 @@ def pddlstream_from_problem(robot, movable=[], teleport=False, grasp_name='top')
 
 
 #######################################################
+
+def load_local_model(rel_path, asset_name, pose=None, **kwargs):
+	import os
+	from examples.pybullet.utils.pybullet_tools.utils import load_pybullet
+	abs_path = os.path.join(rel_path, asset_name)
+	body = load_pybullet(abs_path, **kwargs)
+	if pose is not None:
+		set_pose(body, pose)
+	return body
+	
+
 
 def load_world():
 	# TODO: store internal world info here to be reloaded
