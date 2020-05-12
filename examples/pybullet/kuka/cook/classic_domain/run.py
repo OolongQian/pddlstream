@@ -18,6 +18,7 @@ DOMAIN_PDDL = """
 		(Serve ?r)
 		(Pourable ?o)
 		(Graspable ?o)
+		(Fireproof ?o)
 
 		; Attributes.
 		(HandEmpty)
@@ -28,18 +29,13 @@ DOMAIN_PDDL = """
 		(On ?o ?r)
 		(Holding ?o)
 	)
-	
-	; init = [(Stove stove), (Serve serve), (HandEmpty), (Stackable bottle stove), (Stackable bottle serve),
-	;			(Stackable bowl stove), (Stackable bowl serve), (Pourable bottle), (On strawberry bottle),
-	;			(Graspable bottle), (Graspable bowl)]
-	
 
 	(:action pick
-		:parameters (?o)
+		:parameters (?o ?r)
 		:precondition (and
-						(HandEmpty) (Graspable ?o))
+						(HandEmpty) (Graspable ?o) (On ?o ?r))
 		:effect (and
-					(Holding ?o) (not (HandEmpty))))
+					(Holding ?o) (not (HandEmpty)) (not (On ?o ?r))))
 
 	(:action place
 		:parameters (?o ?r)
@@ -53,12 +49,12 @@ DOMAIN_PDDL = """
 		:precondition (and
 						(Holding ?po) (Pourable ?po))
 		:effect (and
-					(forall (?o) (when (On ?o ?po) (On ?o ?r)))))
+					(forall (?o) (when (On ?o ?po) (and (On ?o ?r) (not (On ?o ?po)))))))
 	
 	(:action cook
 		:parameters (?o ?r)
 		:precondition (and
-						(Stove ?r) (On ?o ?r))
+						(Stove ?r) (On ?o ?r) (Fireproof ?o))
 		:effect (and
 					(forall (?f) (when (On ?f ?o) (Cooked ?f)))))
 	
@@ -67,8 +63,9 @@ DOMAIN_PDDL = """
 		:precondition (and
 						(Serve ?r) (On ?o ?r))
 		:effect (and
-					(forall (?f) (when (On ?f ?o) (Served ?f)))))
+					(forall (?f) (when (and (On ?f ?o) (Cooked ?f)) (Served ?f)))))
 )
+
 """
 
 ##################################################
@@ -79,28 +76,38 @@ def get_problem1():
     stream_map = {}
 
     init = [
-        ('stove', ),
-        ('serve', ),
-        ('bottle', ),
-        ('bowl', ),
-        ('strawberry', ),
-        ('HandEmpty', ),
+        ('Stove', 'stove'),
+        ('Serve', 'serve'),
+    
         ('Stackable', 'bottle', 'stove'),
         ('Stackable', 'bottle', 'serve'),
+        ('Stackable', 'bottle', 'reserve'),
+        ('Stackable', 'bowl', 'stove'),
         ('Stackable', 'bowl', 'serve'),
-        ('Stackable', 'bowl', 'serve'),
-        ('Pourable', 'bottle'),
-        ('On', 'strawberry', 'bottle'),
+        ('Stackable', 'bowl', 'reserve'),
+        
+        ('Fireproof', 'bowl'),
+    
         ('Graspable', 'bottle'),
-        ('Graspable', 'bowl')
+        ('Graspable', 'bowl'),
+        
+        ('Pourable', 'bottle'),
+    
+        ('On', 'strawberry', 'bottle'),
+        ('On', 'bottle', 'reserve'),
+        ('On', 'bowl', 'reserve'),
+        
+        ('HandEmpty', )
     ]
     goal = And(
-        ('Cooked', 'strawberry')
+        # ('On', 'bowl', 'stove')
+        ('Served', 'strawberry')
+        # ('On', 'strawberry', 'bowl')
     )
 
     return PDDLProblem(DOMAIN_PDDL, constant_map, stream_pddl, stream_map, init, goal)
 
-def solve_pddlstream(focused=True):
+def solve_pddlstream(focused=False):
     problem_fn = get_problem1  # get_problem1 | get_problem2
     pddlstream_problem = problem_fn()
     print('Init:', pddlstream_problem.init)

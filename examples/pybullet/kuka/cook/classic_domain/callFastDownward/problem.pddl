@@ -7,10 +7,10 @@
 			
 			(Stackable bottle stove) 
 			(Stackable bottle serve) 
-			(Stackable bowl serve) 
+            (Stackable bottle reserve)
+            (Stackable bowl serve)
 			(Stackable bowl stove) 
-			(Stackable bottle reserve) 
-			(Stackable bowl reserve) 
+			(Stackable bowl reserve)
 			
 			(Fireproof bowl)
 

@@ -1,0 +1,18 @@
+I would like to implement a cook task setting.
+
+First, I would like to realize a classic pddl planning domain.
+
+I find, in examples.advanced folder is there a python file that invokes fastDownward from within.
+
+I have little experience in programming PDDL, thus I do this step-by-step.
+
+I copy a gripper example from FastDownward experiment example, whose correctness is ensured.
+
+I implement a classic pddl domain & problem in /callFastDownward folder, and use launch.sh to invoke FastDownward
+    in shell. The correctness is ensured.
+
+Then, I copy the correct .pddl implementation into classic_domain/run.py.
+
+I suddenly start to question whether focused_algorithm support Forall and Exist.
+
+I am pretty sure that the focused algorithm cannot support Universal and Existential quantifiers.
