@@ -8,6 +8,7 @@
 		(Serve ?r) 
 		(Pourable ?o) 
 		(Graspable ?o) 
+		(Fireproof ?o) 
 
 		; Attributes. 
 		(HandEmpty)
@@ -20,11 +21,11 @@
 	)
 
 	(:action pick
-		:parameters (?o) 
+		:parameters (?o ?r) 
 		:precondition (and 
-						(HandEmpty) (Graspable ?o))
+						(HandEmpty) (Graspable ?o) (On ?o ?r))
 		:effect (and 
-					(Holding ?o) (not (HandEmpty)))) 
+					(Holding ?o) (not (HandEmpty)) (not (On ?o ?r)))) 
 
 	(:action place 
 		:parameters (?o ?r) 
@@ -38,12 +39,12 @@
 		:precondition (and 
 						(Holding ?po) (Pourable ?po)) 
 		:effect (and 
-					(forall (?o) (when (On ?o ?po) (On ?o ?r)))))
+					(forall (?o) (when (On ?o ?po) (and (On ?o ?r) (not (On ?o ?po)))))))
 	
 	(:action cook
 		:parameters (?o ?r)
 		:precondition (and 
-						(Stove ?r) (On ?o ?r)) 
+						(Stove ?r) (On ?o ?r) (Fireproof ?o)) 
 		:effect (and 
 					(forall (?f) (when (On ?f ?o) (Cooked ?f))))) 
 	
@@ -52,5 +53,5 @@
 		:precondition (and 
 						(Serve ?r) (On ?o ?r))
 		:effect (and 
-					(forall (?f) (when (On ?f ?o) (Served ?f)))))
+					(forall (?f) (when (and (On ?f ?o) (Cooked ?f)) (Served ?f)))))
 )

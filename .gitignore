@@ -4,3 +4,5 @@ temp
 visualizations
 statistics
 gurobi.log
+sas_plan
+*.sas
