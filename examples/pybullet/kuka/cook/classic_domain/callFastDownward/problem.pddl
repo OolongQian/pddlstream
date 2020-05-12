@@ -1,0 +1,17 @@
+(define (problem cook-1)
+	(:domain cook) 
+	(:objects stove serve bottle bowl strawberry) 
+	(:init (Stove stove) 
+			(Serve serve) 
+			(Pourable bottle) 
+			
+			(Stackable bottle stove) 
+			(Stackable bottle serve) 
+			(Stackable bowl serve) 
+			(Stackable bowl stove) 
+			
+			(On strawberry bottle) 
+			(Graspable bottle) 
+			(Graspable bowl))
+	(:goal (and (Cooked strawberry)))
+)
