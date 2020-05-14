@@ -150,6 +150,7 @@ def solve_focused(problem, constraints=PlanConstraints(), stream_info={}, replan
                 reenable_disabled(evaluations, disabled)
 
         #print(stream_plan_complexity(evaluations, stream_plan))
+        # use_skeletons = False
         if use_skeletons:
             #optimizer_plan = replan_with_optimizers(evaluations, stream_plan, domain, optimizers)
             optimizer_plan = None

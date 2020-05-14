@@ -39,16 +39,16 @@ DOMAIN_PDDL = """
   ;  :precondition (exists (?o) (P1 ?o))
   ;  :effect (Goal)
   ;)
-  ;(:action forall-act
-  ;  :parameters ()
-  ;  :precondition (forall (?o) (P1 ?o))
-  ;  :effect (Goal)
-  ;)
-  (:action imply-act
+  (:action forall-act
     :parameters ()
-    :precondition (imply (A) (B))
+    :precondition (forall (?o) (P1 ?o))
     :effect (Goal)
   )
+  ;(:action imply-act
+  ;  :parameters ()
+  ;  :precondition (imply (A) (B))
+  ;  :effect (Goal)
+  ;)
 )
 """
 

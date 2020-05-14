@@ -92,12 +92,12 @@ def pddlstream_from_problem(robot, movable=[], teleport=False, grasp_name='top')
 
     body = movable[0]
     goal = ('and',
-            ('AtConf', conf),
-            #('Holding', body),
-            #('On', body, fixed[1]),
+            # ('AtConf', conf),
+            ('Holding', body),
+            # ('On', body, fixed[1]),
             #('On', body, fixed[2]),
             #('Cleaned', body),
-            ('Cooked', body),
+            # ('Cooked', body),
     )
 
     stream_map = {

@@ -21,6 +21,8 @@ def get_steps_from_stream(stream_plan, step_from_fact, node_from_atom):
 
 def convert_fluent_streams(stream_plan, real_states, action_plan, step_from_fact, node_from_atom):
     import pddl
+    from pddlstream.language.stream import Stream
+    
     assert len(real_states) == len(action_plan) + 1
     steps_from_stream = get_steps_from_stream(stream_plan, step_from_fact, node_from_atom)
 
@@ -32,11 +34,16 @@ def convert_fluent_streams(stream_plan, real_states, action_plan, step_from_fact
     fluent_plan = []
     for result in stream_plan:
         external = result.external
+        if isinstance(external, Stream) and external.name == 'plan-free-motion':
+            tmp = not external.is_fluent()
+            a = 1
+            
         if isinstance(result, FunctionResult) or (result.opt_index != 0) or (not external.is_fluent()):
             static_plan.append(result)
             continue
         if outgoing_edges[result]:
             # No way of taking into account the binding of fluent inputs when preventing cycles
+            # NOTE : I do not really understand.
             raise NotImplementedError('Fluent stream is required for another stream: {}'.format(result))
         #if (len(steps_from_stream[result]) != 1) and result.output_objects:
         #    raise NotImplementedError('Fluent stream required in multiple states: {}'.format(result))

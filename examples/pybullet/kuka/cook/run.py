@@ -64,6 +64,12 @@ def get_holding_motion_synth(robot, movable=[], teleport=False):
 #######################################################
 
 def pddlstream_from_problem(robot, movable=[], teleport=False, grasp_name='top'):
+	"""
+	Read external .pddl problem specification files and define the problem.
+	The external .pddl files are in domain_pddl and stream_pddl, and are in the form of string.
+	init -- a list of initial predicates, where the pose semantics are given by pose queried in p.
+	The differentiation in movable and fixed objects are unnecessary, or it is just a good way of specifying goals.
+	"""
 	# assert (not are_colliding(tree, kin_cache))
 	
 	domain_pddl = read(get_file_path(__file__, 'domain.pddl'))
@@ -74,7 +80,7 @@ def pddlstream_from_problem(robot, movable=[], teleport=False, grasp_name='top')
 	conf = BodyConf(robot, get_configuration(robot))
 	init = [('CanMove',), ('Conf', conf), ('AtConf', conf), ('HandEmpty',)]
 	
-	fixed = get_fixed(robot, movable)
+	fixed = get_fixed(robot, movable)  # can get all bodies by calling p from anywhere. fixed is all excluding robot and movable.
 	print('Movable:', movable)
 	print('Fixed:', fixed)
 	for body in movable:
@@ -98,7 +104,8 @@ def pddlstream_from_problem(robot, movable=[], teleport=False, grasp_name='top')
 	# goal = ('and', ('AtConf', conf), ('Cleaned', movable[0]), ('Cleaned', movable[1]))
 	# goal = ('and', ('AtConf', conf), ('Served', movable[0]), ('Cleaned', movable[1]))
 	# goal = ('and', ('AtConf', conf), ('Served', movable[0]), ('Cooked', movable[1]))
-	goal = ('and', ('AtConf', conf), ('Served', movable[0]), ('Served', movable[1]))
+	# goal = ('and', ('AtConf', conf), ('Served', movable[0]), ('Served', movable[1]))
+	goal = ('and', ('Holding', movable[0]))
 
 	stream_map = {'sample-pose': from_gen_fn(get_stable_gen(fixed)),
 	              'sample-grasp': from_gen_fn(get_grasp_gen(robot, grasp_name)),
@@ -124,10 +131,16 @@ def load_local_model(rel_path, asset_name, pose=None, **kwargs):
 
 
 def load_world():
+	"""
+	Load object models into simulation environment.
+	return some objects information.
+	:returns robot, body_names, movable_bodies.
+	"""
 	# TODO: store internal world info here to be reloaded
 	import sys, os
+	# what local path to be curFolder/models.
 	local_model_path = sys.argv[0]  # get current script directory.
-	local_model_path = os.path.split(local_model_path)[0]  # remove run.py.
+	local_model_path = os.path.split(local_model_path)[0]  # remove run.py in directory.
 	local_model_path = os.path.join(local_model_path, 'models')  # join models folder.
 	with HideOutput():
 		robot = load_model(DRAKE_IIWA_URDF)
@@ -136,10 +149,6 @@ def load_world():
 		sink = load_local_model(local_model_path, 'sink_plate.urdf', pose=Pose(Point(x=-0.5, z=+0.05)))
 		stove = load_local_model(local_model_path, 'stove_plate.urdf', pose=Pose(Point(x=+0.5, z=+0.05)))
 		serve = load_local_model(local_model_path, 'serve_plate.urdf', pose=Pose(Point(x=+0.5, y=+0.5, z=+0.05)))
-		
-		# sink = load_local_model(local_model_path, 'sink.urdf', pose=Pose(Point(x=-0.5)))
-		# stove = load_local_model(local_model_path, 'stove.urdf', pose=Pose(Point(x=+0.5)))
-		# serve = load_local_model(local_model_path, 'serve.urdf', pose=Pose(Point(x=+0.5, y=+0.5)))
 		
 		celery = load_local_model(local_model_path, 'block_for_pick_and_place.urdf', fixed_base=False)
 		radish = load_local_model(local_model_path, 'block_for_pick_and_place_mid_size.urdf', fixed_base=False)
