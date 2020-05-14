@@ -52,3 +52,15 @@ Note, the bytes.decode("UTF-8") problem is in util, which cannot be committed in
 After importing .stl linked object model, other shitty things happen.
 
 The grasp sampler seems not working because the code that queries the simulator information is not working. 
+
+I find if using .obj file, the grasp sampler works. The code supports reading mesh from .obj file. 
+
+Although the sampler works, the planning fails. I do not understand why. 
+
+I suddenly realize that planning fails because the sampled grasp cannot satisfy the inverse kinematic constraint. 
+
+Maybe because the KUKA robot cannot grasp mug at all. 
+
+The next thing to investigate is the inverse kinematics. I need to track the program to figure out what is the problem. 
+
+And to fix it!

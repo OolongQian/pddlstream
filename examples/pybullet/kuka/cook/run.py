@@ -149,8 +149,8 @@ def load_world():
 		sink = load_local_model(local_model_path, 'sink_plate.urdf', pose=Pose(Point(x=-0.5, z=+0.05)))
 		stove = load_local_model(local_model_path, 'stove_plate.urdf', pose=Pose(Point(x=+0.5, z=+0.05)))
 		serve = load_local_model(local_model_path, 'serve_plate.urdf', pose=Pose(Point(x=+0.5, y=+0.5, z=+0.05)))
-		
-		mug = load_local_model(local_model_path, 'mug.urdf', fixed_base=False)
+		mug = load_local_model(local_model_path, 'block_for_pick_and_place.urdf', fixed_base=False)
+		# mug = load_local_model(local_model_path, 'mug.urdf', fixed_base=False)
 
 	body_names = {sink: 'sink', stove: 'stove', serve: 'serve', mug: 'mug'}
 	movable_bodies = [mug, ]
