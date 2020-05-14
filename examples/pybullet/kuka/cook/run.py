@@ -150,14 +150,12 @@ def load_world():
 		stove = load_local_model(local_model_path, 'stove_plate.urdf', pose=Pose(Point(x=+0.5, z=+0.05)))
 		serve = load_local_model(local_model_path, 'serve_plate.urdf', pose=Pose(Point(x=+0.5, y=+0.5, z=+0.05)))
 		
-		celery = load_local_model(local_model_path, 'block_for_pick_and_place.urdf', fixed_base=False)
-		radish = load_local_model(local_model_path, 'block_for_pick_and_place_mid_size.urdf', fixed_base=False)
+		mug = load_local_model(local_model_path, 'mug.urdf', fixed_base=False)
+
+	body_names = {sink: 'sink', stove: 'stove', serve: 'serve', mug: 'mug'}
+	movable_bodies = [mug, ]
 	
-	body_names = {sink: 'sink', stove: 'stove', celery: 'celery', radish: 'radish', serve: 'serve'}
-	movable_bodies = [celery, radish]
-	
-	set_pose(celery, Pose(Point(y=0.5, z=stable_z(celery, floor))))
-	set_pose(radish, Pose(Point(y=-0.5, z=stable_z(radish, floor))))
+	set_pose(mug, Pose(Point(y=0.5, z=stable_z(mug, floor))))
 	
 	set_default_camera()
 	

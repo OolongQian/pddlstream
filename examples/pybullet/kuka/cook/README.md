@@ -48,3 +48,7 @@ OK, the first step, grasp an object is done!
 The next step is to import task related objects. 
 
 Note, the bytes.decode("UTF-8") problem is in util, which cannot be committed in my version, I need to be careful. 
+
+After importing .stl linked object model, other shitty things happen.
+
+The grasp sampler seems not working because the code that queries the simulator information is not working. 

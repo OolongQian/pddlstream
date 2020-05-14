@@ -2,13 +2,13 @@
   <link name="LMS_link">
     <visual>
       <geometry>
-        <mesh filename="./stls/025_mug.stl"/>
+        <mesh filename="./stls/025_mug.stl" scale="2.0" />
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="./stls/025_mug.stl"/>
+        <mesh filename="./stls/025_mug.stl" scale="2.0"/>
       </geometry>
     </collision>>
   </link>
