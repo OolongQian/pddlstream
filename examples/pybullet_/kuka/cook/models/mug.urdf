@@ -1,0 +1,15 @@
+<robot name="mug">
+  <link name="LMS_link">
+    <visual>
+      <geometry>
+        <mesh filename="./stls/025_mug.obj" scale="2.0" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="./stls/025_mug.obj" scale="2.0"/>
+      </geometry>
+    </collision>>
+  </link>
+</robot>

@@ -1,0 +1,15 @@
+<robot name="serve_plate">
+  <link name="LMS_link">
+    <visual>
+      <geometry>
+        <mesh filename="./stls/029_plate.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="./stls/029_plate.stl"/>
+      </geometry>
+    </collision>>
+  </link>
+</robot>
